@@ -190,10 +190,8 @@ Graph, T_data = dataset.B, dataset.X
 # parameter
 int_t = 10
 training_steps = 6000
-time_lag = 3
 n_kp = args.n_kp
 B = 1
-n_roll = T - time_lag
 T_data = torch.Tensor(T_data).cuda().float()
 Graph = torch.Tensor(Graph).cuda().float()
 gt_graph = Graph
@@ -276,7 +274,7 @@ for ep in range(training_steps):
          mean_cur = kp_pred[:, :, :1] #, kp_pred[:, :, 2:].view(B, n_kp, 2, 2)
          mean_des = kp_des[None, : , None] #, covar_gt[:, 0].view(B, n_kp, 2, 2)
          loss_mse_cur = criterionMSE(mean_cur, mean_des).cuda()
-         loss_mse += loss_mse_cur / n_roll
+         loss_mse += loss_mse_cur / roll_out
          avg_regloss.append(loss_mse.item())
          if i % 100 == 0:
              # Accuracy
